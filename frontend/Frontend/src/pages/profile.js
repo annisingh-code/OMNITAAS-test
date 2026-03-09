@@ -1,46 +1,58 @@
-import { useNavigate } from "react-router-dom";
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 
+function Profile(){
 
-function Profile() {
+  const [user,setUser] = useState("")
+  const navigate = useNavigate()
 
-    const [data, setData] = useState("");
+  const token = localStorage.getItem("token")
 
-    const navigate = useNavigate;
+  const getProfile = async () => {
 
+    try{
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-        navigate("/")
-        return
-    }
-    const fetchProfile = async () => {
-        try {
-            const res = await axios.get("http://localhost:3000/profile", {
-                headers:
-                    { Authorization: `Bearer ${token}` }
-            })
-            setData(res.data.user.username)
-        } catch (error) {
-            console.log(error.message)
-            navigate("/")
+      const res = await axios.get("http://localhost:5000/profile",{
+        headers:{
+          Authorization:`Bearer ${token}`
         }
-
+      })
+      setUser(res.data.user.username)
+    }catch(err){
+      navigate("/")
     }
 
-    const logout = () => {
-        localStorage.removeItem("token");
-        navigate("/")
+  }
+
+  useEffect(()=>{
+  if(!token){
+      navigate("/")
+      return
     }
-    return (
-        <div>
-            <h2>My Profile</h2>
-            <p>User:{data}</p>
-            <button onClick={() => navigate("/dashboard")}>
-                Go to Dashboard
-            </button>
-            <button onClick={logout}>Logout</button>
-        </div>
-    )
+    getProfile()
+  },[])
+
+  const logout = () => {
+
+    localStorage.removeItem("token")
+    navigate("/")
+
+  }
+
+  return(
+    <div>
+      <h2>Profile</h2>
+      <p>User: {user}</p>
+      <button onClick={()=>navigate("/dashboard")}>
+        Go Dashboard
+      </button>
+      <button onClick={logout}>
+        Logout
+      </button>
+    </div>
+  )
+
 }
 
 export default Profile

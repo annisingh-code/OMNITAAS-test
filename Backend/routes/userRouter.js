@@ -42,3 +42,4 @@ userRouter.get("/dashboard", authMiddleware, (req, res) => {
 });
 
 
+module.exports = userRouter;

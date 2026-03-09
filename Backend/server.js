@@ -1,16 +1,14 @@
-const express = require("express");
+const express = require("express")
+const cors = require("cors")
+const userRouter = require("./routes/userRouter")
 
-const app = express();
+const app = express()
 
-app.use(cors());
-app.use(express.json());
+app.use(express.json())
+app.use(cors())
 
-
-const user = {
-    username: "admin",
-    password: "admin123"
-}
+app.use("/api", userRouter)
 
 app.listen(5000, () => {
-    console.log("listening on server 3000")
+    console.log("Server running on port 5000")
 })

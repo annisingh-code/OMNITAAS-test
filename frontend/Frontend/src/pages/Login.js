@@ -36,7 +36,7 @@ function login() {
                 />
                 <input
                     placeholder="password"
-                    onChange={(e) => setUsername(e.target.password)}
+                    onChange={(e) => setUsername(e.target.value)}
                 />
             </form>
             <button onClick={handleLogin}>
